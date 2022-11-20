@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from os import system, name
+import shutil
 
 
 def clear_console():
@@ -12,6 +13,7 @@ def clear_console():
 
 def start_process(options):
     clear_console()
+    print(f'Existing number of receipts: {number_of_files}')
     print_options(options)
     chosen_option = int(input(f"Choose one: "))
     choose_option(chosen_option, options)
@@ -72,6 +74,18 @@ def find_and_delete(name, path):
 
 def delete_category():
     entered_category = input('Enter the category: ').lower()
+    find_and_delete_dic(entered_category, main_path)
+    start_process(actions)
+
+
+def find_and_delete_dic(name, path):
+    for root, dirs, files in os.walk(path):
+        if name in dirs:
+            shutil.rmtree(Path(os.path.join(root, name)))
+
+
+def exit_program():
+    print('Closing program')
 
 
 extension_type = '.txt'
@@ -101,17 +115,16 @@ actions = [
     {
         'id': 5,
         'name': 'Delete category',
-        'function': ''
+        'function': delete_category
     },
     {
         'id': 6,
         'name': 'Finish process',
-        'function': ''
+        'function': exit_program
     }
 ]
 
-
-print(f'Existing number of receipts: {number_of_files}')
+# We start the program
 start_process(actions)
 
 
