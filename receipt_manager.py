@@ -12,7 +12,7 @@ def clear_console():
 
 
 def start_process(options):
-    clear_console()
+    # clear_console()
     print(f'Existing number of receipts: {number_of_files}')
     print_options(options)
     chosen_option = int(input(f"Choose one: "))
@@ -31,12 +31,9 @@ def choose_option(id, options):
 
 def read_receipt():
     clear_console()
-    new_path = Path(main_path / input('Enter path: '))
-    if new_path.exists():
-        print(new_path.read_text())
-    else:
-        print('Does not exist')
-        start_process()
+    receipt = input('Enter receipt: ')
+    find_and_read(receipt, main_path)
+    start_process(actions)
 
 
 def create_receipt():
@@ -64,6 +61,13 @@ def delete_receipt():
     entered_receipt = input('Enter the receipt: ').lower()
     find_and_delete(entered_receipt, main_path)
     start_process(actions)
+
+
+def find_and_read(name, path):
+    for root, dirs, files in os.walk(path):
+        print(root, dirs, files)
+        if name in files:
+            print(Path(os.path.join(root, name)).read_text())
 
 
 def find_and_delete(name, path):
